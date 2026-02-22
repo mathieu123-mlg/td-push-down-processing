@@ -68,4 +68,27 @@ public class DataRetriever {
             throw new RuntimeException(e);
         }
     }
+
+    public VoteSummary computeVoteSummary() {
+        String sql = """
+                select count(case when vote.vote_type = 'VALID' then voter_id end) as valid_count,
+                       count(case when vote.vote_type = 'BLANK' then voter_id end) as blank_count,
+                       count(case when vote.vote_type = 'NULL' then voter_id end) as null_count
+                from vote;""";
+
+        try (Connection conn = dbConnection.getDBConnection();
+             PreparedStatement ps = conn.prepareStatement(sql)) {
+            ResultSet rs = ps.executeQuery();
+            if (rs.next()) {
+                return new VoteSummary(
+                        rs.getLong("valid_count"),
+                        rs.getLong("blank_count"),
+                        rs.getLong("null_count")
+                );
+            }
+            throw new RuntimeException("Vote is empty");
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
 }
