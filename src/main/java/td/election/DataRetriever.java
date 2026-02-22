@@ -25,4 +25,23 @@ public class DataRetriever {
             throw new RuntimeException(e);
         }
     }
+
+    public List<VoteTypeCount> countVotesByType() {
+        String sql = "select vote_type, count(voter_id) as count from vote group by vote_type";
+
+        try (Connection conn = dbConnection.getDBConnection();
+             PreparedStatement ps = conn.prepareStatement(sql)) {
+            ResultSet rs = ps.executeQuery();
+            List<VoteTypeCount> voteTypeCounts = new ArrayList<>();
+            while (rs.next()) {
+                voteTypeCounts.add(new VoteTypeCount(
+                        VoteType.valueOf(rs.getString("vote_type")),
+                        rs.getLong("count")
+                ));
+            }
+            return voteTypeCounts;
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
 }
