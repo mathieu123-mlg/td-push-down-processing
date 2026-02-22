@@ -91,4 +91,22 @@ public class DataRetriever {
             throw new RuntimeException(e);
         }
     }
+
+    public double computeTurnoutRate() {
+        String sql = """
+                select (select (select count(voter_id) from vote) /
+                               (select count(id) from voter)
+                        )::numeric(10, 2) as turnout_rate""";
+
+        try (Connection conn = dbConnection.getDBConnection();
+             PreparedStatement ps = conn.prepareStatement(sql)) {
+            ResultSet rs = ps.executeQuery();
+            if (rs.next()) {
+                return rs.getDouble("turnout_rate");
+            }
+            throw new RuntimeException("Error");
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
 }
