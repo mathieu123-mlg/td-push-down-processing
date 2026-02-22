@@ -1,4 +1,4 @@
-package td;
+package td.invoice;
 
 import io.github.cdimascio.dotenv.Dotenv;
 
@@ -9,7 +9,7 @@ import java.sql.SQLException;
 public class DBConnection {
     public Connection getDBConnection() {
         Dotenv dotenv = Dotenv.load();
-        String jdbc_url = dotenv.get("JDBC_URL");
+        String jdbc_url = dotenv.get("JDBC_URL_INVOICE");
         String user = dotenv.get("USER");
         String password = dotenv.get("PASSWORD");
 

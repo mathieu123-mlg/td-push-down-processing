@@ -1,4 +1,4 @@
-package td;
+package td.invoice;
 
 public class InvoiceStatusTotals {
     private final Double totalPaid;

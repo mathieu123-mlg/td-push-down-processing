@@ -1,4 +1,4 @@
-package td;
+package td.invoice;
 
 public class Main {
     public static void main(String[] args) {

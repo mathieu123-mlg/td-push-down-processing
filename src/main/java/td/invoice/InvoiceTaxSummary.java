@@ -1,4 +1,4 @@
-package td;
+package td.invoice;
 
 public class InvoiceTaxSummary {
     private final Integer id;
